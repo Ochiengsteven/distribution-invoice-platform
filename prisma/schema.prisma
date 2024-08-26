@@ -1,0 +1,204 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+enum UserRole {
+  DISTRIBUTOR
+  RETAILER
+  MANUFACTURER
+  DELIVERY_DRIVER
+  SYSTEM_ADMIN
+  PENDING
+}
+
+model User {
+  id             String          @id @default(uuid())
+  email          String          @unique
+  hashedPassword String
+  name           String
+  location       String
+  googleId       String?
+  avatarUrl      String?
+  role           UserRole
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  distributor    Distributor?
+  retailer       Retailer?
+  manufacturer   Manufacturer?
+  deliveryDriver DeliveryDriver?
+  sessions       Session[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@map("sessions")
+}
+
+model Distributor {
+  id        String      @id @default(uuid())
+  user      User        @relation(fields: [userId], references: [id])
+  userId    String      @unique
+  name      String
+  products  Product[]
+  orders    Order[]
+  inventory Inventory[]
+
+  @@map("distributors")
+}
+
+model Retailer {
+  id        String      @id @default(uuid())
+  user      User        @relation(fields: [userId], references: [id])
+  userId    String      @unique
+  name      String
+  orders    Order[]
+  inventory Inventory[]
+
+  @@map("retailers")
+}
+
+model Manufacturer {
+  id       String    @id @default(uuid())
+  user     User      @relation(fields: [userId], references: [id])
+  userId   String    @unique
+  name     String
+  products Product[]
+
+  @@map("manufacturers")
+}
+
+model DeliveryDriver {
+  id     String  @id @default(uuid())
+  user   User    @relation(fields: [userId], references: [id])
+  userId String  @unique
+  name   String
+  orders Order[]
+
+  @@map("delivery_drivers")
+}
+
+model Product {
+  id             String          @id @default(uuid())
+  name           String
+  description    String
+  price          Float
+  manufacturer   Manufacturer    @relation(fields: [manufacturerId], references: [id])
+  manufacturerId String
+  distributor    Distributor     @relation(fields: [distributorId], references: [id])
+  distributorId  String
+  inventory      Inventory[]
+  orderItems     OrderItem[]
+  blockchainInfo BlockchainInfo?
+
+  @@map("products")
+}
+
+model Inventory {
+  id            String      @id @default(uuid())
+  product       Product     @relation(fields: [productId], references: [id])
+  productId     String
+  quantity      Int
+  distributor   Distributor @relation(fields: [distributorId], references: [id])
+  distributorId String
+  retailer      Retailer    @relation(fields: [retailerId], references: [id])
+  retailerId    String
+
+  @@map("inventories")
+}
+
+model Order {
+  id               String          @id @default(uuid())
+  distributor      Distributor     @relation(fields: [distributorId], references: [id])
+  distributorId    String
+  retailer         Retailer        @relation(fields: [retailerId], references: [id])
+  retailerId       String
+  orderItems       OrderItem[]
+  totalAmount      Float
+  status           OrderStatus
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  deliveryDriver   DeliveryDriver? @relation(fields: [deliveryDriverId], references: [id])
+  deliveryDriverId String?
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   String
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+  quantity  Int
+  price     Float
+
+  @@map("order_items")
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model BlockchainInfo {
+  id           String   @id @default(uuid())
+  product      Product  @relation(fields: [productId], references: [id])
+  productId    String   @unique
+  blockchainId String
+  timestamp    DateTime
+
+  @@map("blockchain_info")
+}
+
+model AIForecast {
+  id         String   @id @default(uuid())
+  productId  String
+  date       DateTime
+  quantity   Int
+  confidence Float
+  createdAt  DateTime @default(now())
+
+  @@map("ai_forecasts")
+}
+
+model P2PMarketplaceListing {
+  id        String        @id @default(uuid())
+  sellerId  String
+  productId String
+  location  String
+  quantity  Int
+  price     Float
+  listedAt  DateTime      @default(now())
+  status    ListingStatus
+
+  @@map("p2p_marketplace_listings")
+}
+
+enum ListingStatus {
+  ACTIVE
+  SOLD
+  CANCELLED
+}
