@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Form, Input, Button, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { login } from "./actions";
+import Link from "next/link";
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
@@ -70,6 +71,28 @@ const LoginPage = () => {
             </Button>
           </Form.Item>
         </Form>
+        <div className="mt-6">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-gray-50 text-gray-500">
+                Dont have an account?
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-6 flex items-center justify-center">
+            <Link href="/signup" className="text-blue-500 underline">
+              Sign up
+            </Link>
+            <span className="text-gray-500 ml-1">
+              {" "}
+              to your create your new account
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );

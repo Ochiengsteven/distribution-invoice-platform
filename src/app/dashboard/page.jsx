@@ -1,12 +1,13 @@
 "use client";
-import Navbar from "@/components/Nav";
 import React from "react";
 
 const Dashboard = () => {
   return (
     <div>
-      <Navbar />
-      <p>Dashboard</p>
+      <h1 className="text-2xl font-semibold mb-4 text-black">Dashboard</h1>
+      <p className="text-black">
+        Welcome to your dashboard. Here you can view key metrics and insights.
+      </p>
     </div>
   );
 };

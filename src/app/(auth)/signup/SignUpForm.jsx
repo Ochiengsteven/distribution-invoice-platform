@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Select, message } from "antd";
 import { signUp } from "./actions";
+import Link from "next/link";
 
 const { Option } = Select;
 
@@ -107,6 +108,25 @@ const SignUpForm = () => {
             </Button>
           </Form.Item>
         </Form>
+        <div className="mt-6">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-gray-50 text-gray-500">
+                Already have an account?
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-6 flex items-center justify-center">
+            <Link href="/login" className="text-blue-500 underline">
+              Sign in
+            </Link>
+            <span className="text-gray-500 ml-1"> to your account</span>
+          </div>
+        </div>
       </div>
     </div>
   );

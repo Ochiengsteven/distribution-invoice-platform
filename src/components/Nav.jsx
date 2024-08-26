@@ -73,7 +73,7 @@ const Navbar = () => {
         key="4"
         icon={<LogoutOutlined />}
         onClick={handleLogout}
-        style={{ color: "#ff4d4f" }}
+        className="text-red-500"
         disabled={loggingOut}
       >
         {loggingOut ? "Logging out..." : "Logout"}
@@ -82,33 +82,16 @@ const Navbar = () => {
   );
 
   return (
-    <Header
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "0 20px",
-      }}
-    >
+    <Header className="flex justify-between items-center px-5 bg-gray-800">
       <div className="logo" />
-      <div
-        className="desktop-menu"
-        style={{
-          display: "none",
-          "@media (min-width: 768px)": { display: "block" },
-        }}
-      >
+      {/* Desktop Menu */}
+      <div className="hidden md:block">
         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
           <NavLinks />
         </Menu>
       </div>
-      <div
-        className="mobile-menu"
-        style={{
-          display: "block",
-          "@media (min-width: 768px)": { display: "none" },
-        }}
-      >
+      {/* Mobile Menu */}
+      <div className="block md:hidden">
         <Button type="primary" onClick={showDrawer}>
           <MenuOutlined />
         </Button>
@@ -116,7 +99,7 @@ const Navbar = () => {
           title="Menu"
           placement="right"
           onClose={onClose}
-          visible={visible}
+          open={visible} // Use `open` instead of `visible`
         >
           <Menu mode="vertical">
             <NavLinks />
