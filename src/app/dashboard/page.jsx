@@ -8,6 +8,7 @@ const Dashboard = () => {
       <p className="text-black">
         Welcome to your dashboard. Here you can view key metrics and insights.
       </p>
+      <p>hu</p>
     </div>
   );
 };

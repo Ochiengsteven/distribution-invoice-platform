@@ -14,19 +14,19 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <nav className="w-64 bg-gray-800 h-screen">
+    <nav className="w-64 bg-white h-screen">
       <div className="p-4">
-        <h2 className="text-white text-2xl font-semibold">Distribr</h2>
+        <h2 className="text-primary text-2xl font-semibold">Distribr</h2>
       </div>
-      <ul className="mt-8">
+      <ul className="mt-4">
         {navItems.map((item) => (
           <li key={item.path} className="mb-2">
             <Link href={item.path}>
               <span
                 className={`block p-4 text-sm font-semibold ${
                   pathname === item.path
-                    ? "bg-gray-900 text-white"
-                    : "text-gray-400 hover:bg-gray-700 hover:text-white"
+                    ? "bg-gray-50 text-primary"
+                    : "text-primary hover:bg-gray-100 hover:text-gray-400"
                 }`}
               >
                 {item.name}
