@@ -32,6 +32,7 @@ model User {
   location       String
   googleId       String?
   avatarUrl      String?
+  phoneNo        String?
   role           UserRole
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
