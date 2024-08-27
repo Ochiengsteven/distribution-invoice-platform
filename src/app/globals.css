@@ -10,3 +10,32 @@
     @apply text-primary;
   }
 }
+
+.custom-datepicker-dropdown .ant-picker-panel-container {
+  background-color: white;
+  border-radius: 1rem;
+}
+
+.ant-picker-dropdown {
+  top: 100px !important;
+}
+
+.custom-panel .ant-picker-panel {
+  border-radius: 1rem;
+}
+
+.ant-picker-month-panel {
+  padding: 1rem;
+}
+
+/* CustomDatePicker.css */
+.ant-picker-input > input {
+  text-align: left;
+}
+
+.ant-picker-input > input::before {
+  content: "Timeframe";
+  display: block;
+  font-size: 0.75rem;
+  color: #6b7280;
+}

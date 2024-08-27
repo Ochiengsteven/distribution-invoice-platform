@@ -12,6 +12,7 @@ import MonthlySalesBarGraph from "@/components/graphs/MonthlySales";
 import RevenueGraph from "@/components/graphs/RevenueGraph";
 import ActiveOrders from "@/components/ActiveOrders";
 import NearbyClients from "@/components/NearbyClients";
+import CustomDatePicker from "@/components/CustomDatePicker";
 
 const Dashboard = () => {
   const { user } = useSession();
@@ -45,9 +46,22 @@ const Dashboard = () => {
 
   return (
     <div className="w-full">
-      <div>
-        <p className="">Hello {user.name},</p>
-        <h2 className="font-medium text-5xl">Good Morning</h2>
+      <div className="flex justify-between items-center">
+        <div>
+          <p className="">Hello {user.name},</p>
+          <h2 className="font-medium text-5xl">Good Morning</h2>
+        </div>
+        <div className="bg-white rounded-3xl p-[7px] flex gap-2">
+          <CustomDatePicker />
+          <div className="rounded-3xl border-secondary p-2 flex items-center border-[2px] cursor-pointer">
+            <p className="font-semibold text-xs">Export CSV</p>
+          </div>
+          <div className="rounded-3xl bg-primary p-2 flex items-center cursor-pointer">
+            <p className="font-semibold text-xs text-secondary">
+              Add new invoice
+            </p>
+          </div>
+        </div>
       </div>
       <div className="flex gap-2">
         <div className="mt-10 max-w-[600px]">
