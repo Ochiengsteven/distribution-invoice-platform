@@ -1,16 +1,6 @@
 import React, { useState } from "react";
+import { Layout, Menu, message, Spin, Dropdown, Avatar } from "antd";
 import {
-  Layout,
-  Menu,
-  Button,
-  Drawer,
-  message,
-  Spin,
-  Dropdown,
-  Avatar,
-} from "antd";
-import {
-  MenuOutlined,
   LogoutOutlined,
   HomeOutlined,
   UserOutlined,
@@ -24,17 +14,7 @@ import { useSession } from "@/app/(main)/SessionProvider";
 const { Header } = Layout;
 
 const Navbar = () => {
-  const [visible, setVisible] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
-
-  const showDrawer = () => {
-    setVisible(true);
-  };
-
-  const onClose = () => {
-    setVisible(false);
-  };
-
   const { user } = useSession();
 
   const handleLogout = async () => {
@@ -42,9 +22,9 @@ const Navbar = () => {
     const key = "logoutMessage";
     message.loading({
       content: (
-        <span>
+        <p>
           Logging out <Spin size="small" />
-        </span>
+        </p>
       ),
       key,
       duration: 0,
@@ -93,34 +73,37 @@ const Navbar = () => {
   const menu = <Menu items={menuItems} />;
 
   return (
-    <Header className="flex justify-between items-center mb-3 px-5 bg-white">
+    <Header className="flex justify-between items-center px-5 py-3 bg-secondary h-[9vh]">
       <div className="logo" />
-      {/* Desktop Menu */}
-      <div className="hidden md:block">
-        <Dropdown
-          overlay={menu}
-          trigger={["click", "hover"]}
-          placement="bottomRight"
+      <Dropdown
+        overlay={menu}
+        trigger={["click", "hover"]}
+        placement="bottomRight"
+      >
+        <a
+          onClick={(e) => e.preventDefault()}
+          className="ant-dropdown-link flex items-center bg-white py-2 pl-1 pr-3 mt-3 rounded-[55px]"
         >
-          <a
-            onClick={(e) => e.preventDefault()}
-            className="ant-dropdown-link flex items-center"
+          <Avatar icon={<UserOutlined />} className="mr-2" />
+          <div
+            className="mr-2 flex flex-col justify-center"
+            style={{ lineHeight: 1 }}
           >
-            <Avatar icon={<UserOutlined />} className="mr-2" />
-            <span className="mr-2">{user.name}</span>
-            <DownOutlined />
-          </a>
-        </Dropdown>
-      </div>
-      {/* Mobile Menu */}
-      <div className="block md:hidden">
-        <Button type="primary" onClick={showDrawer}>
-          <MenuOutlined />
-        </Button>
-        <Drawer title="Menu" placement="right" onClose={onClose} open={visible}>
-          <Menu mode="vertical" items={menuItems} />
-        </Drawer>
-      </div>
+            <span style={{ margin: 0, padding: 0 }}>{user.name}</span>
+            <span
+              style={{
+                margin: 0,
+                padding: 0,
+                fontSize: "0.8rem",
+                fontWeight: 600,
+              }}
+            >
+              {user.role}
+            </span>
+          </div>
+          <DownOutlined />
+        </a>
+      </Dropdown>
     </Header>
   );
 };
