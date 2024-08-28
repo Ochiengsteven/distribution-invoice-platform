@@ -10,7 +10,7 @@ const InvoiceModal = ({ visible, onCancel, onSubmit, initialValues }) => {
     if (initialValues) {
       const formattedInitialValues = {
         ...initialValues,
-        expectedPaymentDate: null, // Always set to null when editing
+        expectedPaymentDate: null,
       };
       form.setFieldsValue(formattedInitialValues);
     } else {

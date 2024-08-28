@@ -2,7 +2,7 @@ import { DatePicker } from "antd";
 import { CalendarOutlined } from "@ant-design/icons";
 import { ChevronDown } from "lucide-react";
 
-const CustomDatePicker = () => {
+const CustomDatePicker = ({ onChange }) => {
   return (
     <div className="flex min-w-[150px] items-center bg-secondary rounded-3xl px-3 py-2">
       <CalendarOutlined className="text-gray-500 mr-2" />
@@ -18,6 +18,7 @@ const CustomDatePicker = () => {
         panelRender={(panelNode) => (
           <div className="custom-panel">{panelNode}</div>
         )}
+        onChange={onChange}
       />
     </div>
   );

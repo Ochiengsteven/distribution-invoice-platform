@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import {
   createInvoice,
   updateInvoice,
@@ -23,6 +24,7 @@ import NearbyClients from "@/components/NearbyClients";
 import CustomDatePicker from "@/components/CustomDatePicker";
 import { useTimeGreeting } from "@/utils/useTimeGreeting";
 import InvoiceTable from "@/components/InvoiceTable";
+import { useCsv } from "@/utils/useCsv";
 
 const Dashboard = () => {
   const { user } = useSession();
@@ -31,6 +33,8 @@ const Dashboard = () => {
   const [editingInvoice, setEditingInvoice] = useState(null);
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { generateCsv, loading: csvLoading } = useCsv(user.id);
+  const [selectedMonth, setSelectedMonth] = useState(null);
 
   const loadInvoices = async () => {
     setLoading(true);
@@ -45,6 +49,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     loadInvoices();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.id]);
 
   const handleCreateInvoice = async (values) => {
@@ -80,6 +85,22 @@ const Dashboard = () => {
     }
   };
 
+  const handleExportCsv = () => {
+    if (selectedMonth) {
+      const startDate = new Date(
+        selectedMonth.year(),
+        selectedMonth.month(),
+        1
+      );
+      const endDate = new Date(
+        selectedMonth.year(),
+        selectedMonth.month() + 1,
+        0
+      );
+      generateCsv(startDate, endDate);
+    }
+  };
+
   const dashboardItems = [
     {
       icon: Package,
@@ -107,17 +128,33 @@ const Dashboard = () => {
     },
   ];
 
+  const fadeInVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+  };
+
   return (
-    <div className="w-full">
+    <motion.div
+      className="w-full"
+      initial="hidden"
+      animate="visible"
+      variants={fadeInVariants}
+      transition={{ duration: 0.5 }}
+    >
       <div className="flex justify-between items-center">
         <div>
           <p className="">Hello {user.name},</p>
           <h2 className="font-medium text-5xl">{greeting}</h2>
         </div>
         <div className="bg-white rounded-3xl p-[7px] flex gap-2">
-          <CustomDatePicker />
-          <div className="rounded-3xl border-secondary p-2 flex items-center border-[2px] cursor-pointer">
-            <p className="font-semibold text-xs">Export CSV</p>
+          <CustomDatePicker onChange={(date) => setSelectedMonth(date)} />
+          <div
+            className="rounded-3xl border-secondary p-2 flex items-center border-[2px] cursor-pointer"
+            onClick={handleExportCsv}
+          >
+            <p className="font-semibold text-xs">
+              {csvLoading ? "Exporting..." : "Export CSV"}
+            </p>
           </div>
           <div
             className="rounded-3xl bg-primary p-2 flex items-center cursor-pointer"
@@ -129,8 +166,19 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <div className="flex gap-2">
-        <div className="mt-10 max-w-[600px]">
+      <motion.div
+        className="flex gap-2"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <motion.div
+          className="mt-10 max-w-[600px]"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
           <div className="flex items-center gap-8">
             {dashboardItems.map((item, index) => (
               <div key={index} className="flex items-center gap-2">
@@ -154,20 +202,38 @@ const Dashboard = () => {
           <div className="mt-6">
             <MonthlySalesBarGraph />
           </div>
-        </div>
-        <div className="w-[400px] mt-1">
+        </motion.div>
+        <motion.div
+          className="w-[400px] mt-1"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           <div className="h-[300px]">
             <RevenueGraph />
           </div>
           <div className="mt-1">
             <ActiveOrders />
           </div>
-        </div>
-        <div className="flex-1 mt-1">
+        </motion.div>
+        <motion.div
+          className="flex-1 mt-1"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
           <NearbyClients />
-        </div>
-      </div>
-      <div className="mt-8">
+        </motion.div>
+      </motion.div>
+      <motion.div
+        className="mt-8"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.6 }}
+      >
         <InvoiceTable
           invoices={invoices}
           loading={loading}
@@ -177,7 +243,7 @@ const Dashboard = () => {
           }}
           onDelete={handleDeleteInvoice}
         />
-      </div>
+      </motion.div>
       <InvoiceModal
         visible={isModalVisible}
         onCancel={() => {
@@ -187,7 +253,7 @@ const Dashboard = () => {
         onSubmit={editingInvoice ? handleEditInvoice : handleCreateInvoice}
         initialValues={editingInvoice}
       />
-    </div>
+    </motion.div>
   );
 };
 
