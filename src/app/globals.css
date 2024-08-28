@@ -39,3 +39,25 @@
   font-size: 0.75rem;
   color: #6b7280;
 }
+
+.custom-button.ant-btn-primary {
+  background-color: #0d191d !important;
+  border-color: #0d191d !important;
+}
+
+.custom-button.ant-btn-primary:hover,
+.custom-button.ant-btn-primary:focus {
+  background-color: #1e2f36 !important;
+  border-color: #1e2f36 !important;
+}
+
+.custom-button.ant-btn-primary:active {
+  background-color: #1e2f36 !important;
+  border-color: #1e2f36 !important;
+}
+
+/* Override Ant Design's default focus styles */
+.custom-button.ant-btn-primary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(30, 47, 54, 0.2);
+}

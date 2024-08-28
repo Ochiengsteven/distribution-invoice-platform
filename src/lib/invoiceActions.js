@@ -58,3 +58,88 @@ export async function fetchInvoices(userId) {
     return { success: false, error: "Failed to fetch invoices" };
   }
 }
+
+export async function fetchInvoiceRevenue(timeFrame) {
+  try {
+    const now = new Date();
+    let startDate;
+
+    switch (timeFrame) {
+      case "week":
+        startDate = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate() - 7
+        );
+        break;
+      case "month":
+        startDate = new Date(
+          now.getFullYear(),
+          now.getMonth() - 1,
+          now.getDate()
+        );
+        break;
+      case "year":
+        startDate = new Date(
+          now.getFullYear() - 1,
+          now.getMonth(),
+          now.getDate()
+        );
+        break;
+      default:
+        startDate = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate() - 7
+        );
+    }
+
+    const invoices = await prisma.invoice.findMany({
+      where: {
+        createdAt: {
+          gte: startDate,
+          lte: now,
+        },
+      },
+      select: {
+        amount: true,
+        createdAt: true,
+      },
+    });
+
+    const totalRevenue = invoices.reduce(
+      (sum, invoice) => sum + invoice.amount,
+      0
+    );
+
+    // Calculate percentage change
+    const previousPeriodStart = new Date(
+      startDate.getTime() - (now.getTime() - startDate.getTime())
+    );
+    const previousInvoices = await prisma.invoice.findMany({
+      where: {
+        createdAt: {
+          gte: previousPeriodStart,
+          lt: startDate,
+        },
+      },
+      select: {
+        amount: true,
+      },
+    });
+
+    const previousTotalRevenue = previousInvoices.reduce(
+      (sum, invoice) => sum + invoice.amount,
+      0
+    );
+    const percentageChange =
+      previousTotalRevenue !== 0
+        ? ((totalRevenue - previousTotalRevenue) / previousTotalRevenue) * 100
+        : 100;
+
+    return { success: true, totalRevenue, percentageChange };
+  } catch (error) {
+    console.error("Error fetching invoice revenue:", error);
+    return { success: false, error: "Failed to fetch invoice revenue" };
+  }
+}

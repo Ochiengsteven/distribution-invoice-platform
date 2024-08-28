@@ -10,6 +10,7 @@ import {
 import Link from "next/link";
 import { logOut } from "@/app/(auth)/actions";
 import { useSession } from "@/app/(main)/SessionProvider";
+import { BellOutlined } from "@ant-design/icons";
 
 const { Header } = Layout;
 
@@ -75,35 +76,40 @@ const Navbar = () => {
   return (
     <Header className="flex justify-between items-center px-5 py-3 bg-secondary h-[9vh]">
       <div className="logo" />
-      <Dropdown
-        overlay={menu}
-        trigger={["click", "hover"]}
-        placement="bottomRight"
-      >
-        <a
-          onClick={(e) => e.preventDefault()}
-          className="ant-dropdown-link flex items-center bg-white py-2 pl-1 pr-3 mt-3 rounded-[55px]"
+      <div className="flex items-center gap-3 justify-center">
+        <div className="bg-white rounded-full p-2 w-10 h-10 flex items-center justify-center cursor-pointer">
+          <BellOutlined className="text-xl text-primary" />
+        </div>
+        <Dropdown
+          overlay={menu}
+          trigger={["click", "hover"]}
+          placement="bottomRight"
         >
-          <Avatar icon={<UserOutlined />} className="mr-2" />
-          <div
-            className="mr-2 flex flex-col justify-center"
-            style={{ lineHeight: 1 }}
+          <a
+            onClick={(e) => e.preventDefault()}
+            className="ant-dropdown-link flex items-center bg-white py-2 pl-1 pr-3 mt-0 rounded-[55px] cursor-pointer"
           >
-            <span style={{ margin: 0, padding: 0 }}>{user.name}</span>
-            <span
-              style={{
-                margin: 0,
-                padding: 0,
-                fontSize: "0.8rem",
-                fontWeight: 600,
-              }}
+            <Avatar icon={<UserOutlined />} className="mr-2" />
+            <div
+              className="mr-2 flex flex-col justify-center"
+              style={{ lineHeight: 1 }}
             >
-              {user.role}
-            </span>
-          </div>
-          <DownOutlined />
-        </a>
-      </Dropdown>
+              <span style={{ margin: 0, padding: 0 }}>{user.name}</span>
+              <span
+                style={{
+                  margin: 0,
+                  padding: 0,
+                  fontSize: "0.8rem",
+                  fontWeight: 600,
+                }}
+              >
+                {user.role}
+              </span>
+            </div>
+            <DownOutlined />
+          </a>
+        </Dropdown>
+      </div>
     </Header>
   );
 };

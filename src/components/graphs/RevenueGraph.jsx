@@ -1,26 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { MoreOutlined } from "@ant-design/icons";
 import { Card, Typography, Dropdown, Button } from "antd";
 import { ArrowUpRight } from "lucide-react";
+import { fetchInvoiceRevenue } from "@/lib/invoiceActions";
 
 const { Title, Paragraph } = Typography;
-
-// Assuming 70% achievement for this example
-const data = [
-  { name: "Achieved", value: 70 },
-  { name: "Remaining", value: 30 },
-];
 
 const COLORS = ["#CBDBEA", "#F1F5F8"];
 
 const items = [
-  { key: "1", label: "Weekly" },
-  { key: "2", label: "Monthly" },
-  { key: "3", label: "Yearly" },
+  { key: "Week", label: "Weekly" },
+  { key: "Month", label: "Monthly" },
+  { key: "Year", label: "Yearly" },
 ];
 
 const RevenueChart = () => {
+  const [timeFrame, setTimeFrame] = useState("Weekly");
+  const [totalRevenue, setTotalRevenue] = useState(0);
+  const [percentageChange, setPercentageChange] = useState(0);
+
+  useEffect(() => {
+    const fetchRevenue = async () => {
+      const result = await fetchInvoiceRevenue(timeFrame.toLowerCase());
+      if (result.success) {
+        setTotalRevenue(result.totalRevenue);
+        setPercentageChange(result.percentageChange);
+      }
+    };
+
+    fetchRevenue();
+  }, [timeFrame]);
+
+  const data = [
+    { name: "Achieved", value: totalRevenue },
+    { name: "Remaining", value: 1000000 - totalRevenue }, // Assuming a target of 100,000
+  ];
+
   return (
     <Card className="w-full h-full">
       <div className="flex justify-between items-start mb-4">
@@ -30,7 +46,14 @@ const RevenueChart = () => {
           </Title>
           <Paragraph type="secondary">Total sales revenue overview</Paragraph>
         </div>
-        <Dropdown menu={{ items }} placement="bottomRight" arrow>
+        <Dropdown
+          menu={{
+            items,
+            onClick: ({ key }) => setTimeFrame(key),
+          }}
+          placement="bottomRight"
+          arrow
+        >
           <Button
             shape="circle"
             icon={<MoreOutlined />}
@@ -66,17 +89,22 @@ const RevenueChart = () => {
           style={{ paddingBottom: "30px" }}
         >
           <Title level={3} style={{ marginBottom: 0 }}>
-            $ 272,980.19
+            $ {totalRevenue.toFixed(2)}
           </Title>
           <Paragraph
             style={{
-              color: "#52c41a",
+              color: percentageChange >= 0 ? "#52c41a" : "#f5222d",
               marginBottom: 0,
               display: "flex",
               alignItems: "baseline",
             }}
           >
-            +2.67% <ArrowUpRight size={14} className="mx-1" /> than last week
+            {percentageChange >= 0 ? "+" : "-"}
+            {Math.abs(percentageChange).toFixed(2)}%
+            <ArrowUpRight size={14} className="mx-1" />{" "}
+            <span className="text-primary">
+              than last {timeFrame.toLowerCase()}
+            </span>
           </Paragraph>
         </div>
       </div>
