@@ -41,6 +41,7 @@ model User {
   manufacturer   Manufacturer?
   deliveryDriver DeliveryDriver?
   sessions       Session[]
+  invoices       Invoice[] // Add this line
 
   @@map("users")
 }
@@ -63,6 +64,7 @@ model Distributor {
   products  Product[]
   orders    Order[]
   inventory Inventory[]
+  invoices  Invoice[] // Add this line
 
   @@map("distributors")
 }
@@ -74,6 +76,7 @@ model Retailer {
   name      String
   orders    Order[]
   inventory Inventory[]
+  invoices  Invoice[] // Add this line
 
   @@map("retailers")
 }
@@ -84,6 +87,7 @@ model Manufacturer {
   userId   String    @unique
   name     String
   products Product[]
+  invoices Invoice[] // Add this line
 
   @@map("manufacturers")
 }
@@ -202,4 +206,32 @@ enum ListingStatus {
   ACTIVE
   SOLD
   CANCELLED
+}
+
+enum InvoiceStatus {
+  PAID
+  PENDING
+}
+
+model Invoice {
+  id                  String        @id @default(uuid())
+  customerName        String
+  email               String
+  location            String
+  status              InvoiceStatus
+  phoneNumber         String?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  expectedPaymentDate DateTime?
+  amount              Float // Add this line
+  userId              String
+  user                User          @relation(fields: [userId], references: [id])
+  distributorId       String?
+  distributor         Distributor?  @relation(fields: [distributorId], references: [id])
+  retailerId          String?
+  retailer            Retailer?     @relation(fields: [retailerId], references: [id])
+  manufacturerId      String?
+  manufacturer        Manufacturer? @relation(fields: [manufacturerId], references: [id])
+
+  @@map("invoices")
 }
