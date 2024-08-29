@@ -21,9 +21,6 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   const session = await validateRequest();
 
-  if (!session.user) {
-    redirect("/login");
-  }
   return (
     <html lang="en">
       <body className={poppins.className}>

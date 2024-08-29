@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Button, Table, message } from "antd";
+import { Badge, Button, Table, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import DriverModal from "@/components/DriverModal";
 import {
@@ -92,7 +92,18 @@ const Drivers = () => {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold text-black">Drivers</h1>
+        <div className="flex flex-col items-center gap-2">
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-bold text-black">Delivery drivers</h1>
+            <Badge
+              count={drivers.length}
+              style={{ backgroundColor: "#52c41a" }}
+            />
+          </div>
+          <p className="text-sm text-gray-500 pl-3">
+            Manage your delivery drivers here.
+          </p>
+        </div>
         <Button
           type="primary"
           icon={<PlusOutlined />}

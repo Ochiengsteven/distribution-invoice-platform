@@ -25,8 +25,8 @@ enum UserRole {
 }
 
 model User {
-  id              String           @id @default(uuid())
-  email           String           @unique
+  id              String                  @id @default(uuid())
+  email           String                  @unique
   hashedPassword  String
   name            String
   location        String
@@ -34,14 +34,15 @@ model User {
   avatarUrl       String?
   phoneNo         String?
   role            UserRole
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+  createdAt       DateTime                @default(now())
+  updatedAt       DateTime                @updatedAt
   distributor     Distributor?
   retailer        Retailer?
   manufacturer    Manufacturer?
   deliveryDrivers DeliveryDriver[]
   sessions        Session[]
   invoices        Invoice[] // Add this line
+  listings        P2PMarketplaceListing[]
 
   @@map("users")
 }
@@ -190,14 +191,17 @@ model AIForecast {
 }
 
 model P2PMarketplaceListing {
-  id        String        @id @default(uuid())
-  sellerId  String
-  productId String
-  location  String
-  quantity  Int
-  price     Float
-  listedAt  DateTime      @default(now())
-  status    ListingStatus
+  id          String        @id @default(uuid())
+  title       String
+  description String
+  productId   String
+  location    String
+  quantity    Int
+  price       Float
+  listedAt    DateTime      @default(now())
+  status      ListingStatus
+  user        User          @relation(fields: [userId], references: [id])
+  userId      String
 
   @@map("p2p_marketplace_listings")
 }
