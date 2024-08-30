@@ -25,24 +25,27 @@ enum UserRole {
 }
 
 model User {
-  id              String                  @id @default(uuid())
-  email           String                  @unique
-  hashedPassword  String
-  name            String
-  location        String
-  googleId        String?
-  avatarUrl       String?
-  phoneNo         String?
-  role            UserRole
-  createdAt       DateTime                @default(now())
-  updatedAt       DateTime                @updatedAt
-  distributor     Distributor?
-  retailer        Retailer?
-  manufacturer    Manufacturer?
-  deliveryDrivers DeliveryDriver[]
-  sessions        Session[]
-  invoices        Invoice[] // Add this line
-  listings        P2PMarketplaceListing[]
+  id               String                  @id @default(uuid())
+  email            String                  @unique
+  hashedPassword   String
+  name             String
+  location         String
+  googleId         String?
+  avatarUrl        String?
+  phoneNo          String?
+  role             UserRole
+  createdAt        DateTime                @default(now())
+  updatedAt        DateTime                @updatedAt
+  distributor      Distributor?
+  retailer         Retailer?
+  manufacturer     Manufacturer?
+  deliveryDrivers  DeliveryDriver[]
+  sessions         Session[]
+  invoices         Invoice[]
+  listings         P2PMarketplaceListing[]
+  sentMessages     Message[]               @relation("SentMessages")
+  receivedMessages Message[]               @relation("ReceivedMessages")
+  chats            ChatParticipant[]
 
   @@map("users")
 }
@@ -238,4 +241,41 @@ model Invoice {
   manufacturer        Manufacturer? @relation(fields: [manufacturerId], references: [id])
 
   @@map("invoices")
+}
+
+model Chat {
+  id           String            @id @default(uuid())
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  messages     Message[]
+  participants ChatParticipant[]
+
+  @@map("chats")
+}
+
+model ChatParticipant {
+  id       String   @id @default(uuid())
+  userId   String
+  chatId   String
+  joinedAt DateTime @default(now())
+  user     User     @relation(fields: [userId], references: [id])
+  chat     Chat     @relation(fields: [chatId], references: [id])
+
+  @@unique([userId, chatId])
+  @@map("chat_participants")
+}
+
+model Message {
+  id         String   @id @default(uuid())
+  content    String
+  senderId   String
+  receiverId String
+  chatId     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  chat       Chat     @relation(fields: [chatId], references: [id])
+
+  @@map("messages")
 }
