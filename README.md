@@ -1,8 +1,13 @@
-# Distribr - Alcohol Distribution Platform
+# Distribr - Global Warehouse Inventory Management and P2P Trading Platform
 
 ## Table of Contents
 
 - [Introduction](#introduction)
+- [The Problem](#the-problem)
+- [Our Solution](#our-solution)
+- [Validation and Business Model](#validation-and-business-model)
+- [Our Team](#our-team)
+- [Key Benefits](#key-benefits)
 - [Folder Structure](#folder-structure)
 - [App Architecture](#app-architecture)
 - [Tech Stack](#tech-stack)
@@ -16,13 +21,66 @@ Distribr is a modern alcohol distribution platform designed to streamline the pr
 
 ### Key Features
 
+- Mobile-first, multi-currency payment system
+- Data-driven insights and analytics
+- Low-bandwidth business tools
+- Pan-African peer-to-peer marketplace
 - User authentication and role-based access control
 - Dashboard with real-time analytics and revenue tracking
 - Invoice management system
 - Chat functionality for communication between users
-- Marketplace for peer-to-peer listings and transactions
 - Driver management and order tracking
 - Responsive design for mobile and desktop use
+
+## The Problem
+
+### Key Issues:
+
+1. Inefficient cross-border payment systems
+   - High fees, long processing times
+2. Lack of affordable digital inventory management tools
+   - Manual processes, inaccuracies
+3. Limited real-time market data for emerging markets
+   - Missed opportunities, poor forecasting
+
+### Impact:
+
+- Operational inefficiencies
+- Increased costs
+- Reduced competitiveness
+
+## Our Solution
+
+### Warehouse Inventory Management and P2P Trading Platform
+
+1. Mobile-first, multi-currency payment system
+   - Payd payments.
+2. Data-driven insights and analytics
+   - Tailored for emerging markets
+3. Low-bandwidth business tools
+   - Order Management, Communication Hubs, Real-time Pricing Updates
+4. Pan-African peer-to-peer marketplace
+   - For excess inventory management
+
+## Business Model
+
+### Business Model:
+
+1. Software Sales
+   - Tiered pricing based on business size
+2. Transaction Fees
+   - P2P marketplace
+   - Cross-border payments
+3. Add-on Modules
+   - Specialized features (e.g., advanced analytics)
+
+## Key Benefits
+
+1. 80% reduction in cross-border transaction times
+2. 50% improvement in inventory accuracy
+3. 35% increase in overall operational efficiency
+4. 30% reduction in operational costs
+5. 25% increase in profitability for SMEs
 
 ## Folder Structure
 
@@ -116,6 +174,13 @@ To get the project running locally, follow these steps:
 
 - [Ochieng Steven](https://github.com/Ochiengsteven)
 
-## Support
+- [Okuto Jeremy](https://github.com/JerryLegend254)
 
-For support, please open an issue in the GitHub repository or contact [stevenochieng6305@gmail.com](mailto:stevenochieng6305@gmail.com).
+- [Korir Emanuel](https://github.com/viggenkorir)
+
+- [Jude Kimathi](https://github.com/jxkimathi)
+
+### UTILITIES
+
+- [Landing page design](https://dribbble.com/shots/24196601-Delivery-Web-Design-Concept)
+- [Dasboard designs](https://www.behance.net/gallery/198149127/Logistic-management-Software-App-design?tracking_source=search_projects|logistic+app+ui&l=25)
