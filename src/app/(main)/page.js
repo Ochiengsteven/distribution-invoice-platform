@@ -18,7 +18,7 @@ export default function Home() {
       <Header />
       <div className="flex w-[1100px] self-center text-center">
         <p className="text-indigo-950 text-8xl">*</p>
-        <h1 className="text-7xl font-black uppercase mx-auto text-indigo-950">
+        <h1 className="text-xl xl:text-7xl font-black uppercase mx-auto text-indigo-950">
           Effortless invoice management from warehouse to customer
         </h1>
         <p className="text-indigo-950 text-8xl self-end">*</p>
@@ -36,6 +36,12 @@ export default function Home() {
       </div>
       <div className="flex flex-col items-center justify-center mt-6">
         <Image src="/home-dip.png" alt="hero-image" width={560} height={300} />
+        <div className="bg-indigo-950 px-6 py-4 flex gap-4 rounded-full absolute right-[-20px] rotate-[-20deg] font-bold">
+          <p className="text-white">Have questions?</p>
+        </div>
+        <div className="bg-indigo-950 px-12 py-4 flex rounded-full absolute left-[-40px] font-bold bottom-12">
+          <p className="text-white">Your #1 Invoice Management Buddy!</p>
+        </div>
       </div>
       <p className="text-sm text-center text-gray-700 w-[500px] self-center">
         Effortlessly manage invoices across your warehouse and customer network,
