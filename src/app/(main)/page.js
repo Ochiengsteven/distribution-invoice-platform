@@ -1,9 +1,55 @@
 "use client";
 
+import Header from "@/components/Header";
+import { CheckCircleOutlined } from "@ant-design/icons";
+import { Button } from "antd";
+import Image from "next/image";
+
+const attrArr = [
+  "Invoice management",
+  "Payment Integration",
+  "Driver Management",
+  "P2P Market Trade",
+];
+
 export default function Home() {
   return (
-    <main>
-      <h1>Home</h1>
+    <main className="flex flex-col gap-6">
+      <Header />
+      <div className="flex w-[1100px] self-center text-center">
+        <p className="text-indigo-950 text-8xl">*</p>
+        <h1 className="text-7xl font-black uppercase mx-auto text-indigo-950">
+          Effortless invoice management from warehouse to customer
+        </h1>
+        <p className="text-indigo-950 text-8xl self-end">*</p>
+      </div>
+      <div className="flex gap-8 self-center">
+        {attrArr.map((att) => (
+          <div
+            key={att}
+            className="flex item-center gap-3 text-indigo-950 font-semibold"
+          >
+            <CheckCircleOutlined className="text-2xl" />
+            {att}
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-col items-center justify-center mt-6">
+        <Image src="/home-dip.png" alt="hero-image" width={560} height={300} />
+      </div>
+      <p className="text-sm text-center text-gray-700 w-[500px] self-center">
+        Effortlessly manage invoices across your warehouse and customer network,
+        ensuring accurate, timely, and organized financial transactions every
+        time.
+      </p>
+      <Button
+        type="primary"
+        size="large"
+        href="/signup"
+        className="bg-indigo-950  rounded-full hover:bg-indigo-800 self-center text-xl animate-bounce"
+      >
+        Get Started
+      </Button>
     </main>
   );
 }
