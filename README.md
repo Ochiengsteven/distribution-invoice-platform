@@ -1,4 +1,4 @@
-# Distribr - Alcohol Distribution Platform
+# Distribr - Warehouse Distribution Platform
 
 ## Table of Contents
 
@@ -12,7 +12,7 @@
 
 ## Introduction
 
-Distribr is a modern alcohol distribution platform designed to streamline the process of managing inventory, orders, and deliveries for distributors, retailers, manufacturers, and delivery drivers in the alcohol industry. The application provides a comprehensive dashboard with features such as invoice management, real-time analytics, chat functionality, and a marketplace for peer-to-peer transactions.
+Distribr is a modern Warehouse distribution platform designed to streamline the process of managing inventory, orders, and deliveries for distributors, retailers, manufacturers, and delivery drivers in the alcohol industry. The application provides a comprehensive dashboard with features such as invoice management, real-time analytics, chat functionality, and a marketplace for peer-to-peer transactions.
 
 ### Key Features
 
@@ -119,3 +119,8 @@ To get the project running locally, follow these steps:
 ## Support
 
 For support, please open an issue in the GitHub repository or contact [stevenochieng6305@gmail.com](mailto:stevenochieng6305@gmail.com).
+
+### UTILITIES
+
+- [Landing page design](https://dribbble.com/shots/24196601-Delivery-Web-Design-Concept)
+- [Dasboard designs](https://www.behance.net/gallery/198149127/Logistic-management-Software-App-design?tracking_source=search_projects|logistic+app+ui&l=25)

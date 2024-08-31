@@ -1,8 +1,14 @@
 import React, { useState } from "react";
-import { Table, Button, Space, Spin } from "antd";
-import { Edit2, Trash2 } from "lucide-react";
+import { Table, Button, Space, Spin, message } from "antd";
+import { Edit2, Trash2, DollarSign } from "lucide-react";
 
-const InvoiceTable = ({ invoices, loading, onEdit, onDelete }) => {
+const InvoiceTable = ({
+  invoices,
+  loading,
+  onEdit,
+  onDelete,
+  onRequestPayment,
+}) => {
   const [status, setStatus] = useState("All");
 
   const columns = [
@@ -77,6 +83,15 @@ const InvoiceTable = ({ invoices, loading, onEdit, onDelete }) => {
             className="text-red-500"
             onClick={() => onDelete(record.id)}
           />
+          {record.status === "PENDING" && (
+            <Button
+              icon={<DollarSign size={16} />}
+              className="text-green-500"
+              onClick={() => handleRequestPayment(record)}
+            >
+              Request Payment
+            </Button>
+          )}
         </Space>
       ),
     },
@@ -86,6 +101,17 @@ const InvoiceTable = ({ invoices, loading, onEdit, onDelete }) => {
     status === "All"
       ? invoices
       : invoices.filter((invoice) => invoice.status === status.toUpperCase());
+
+  const handleRequestPayment = async (invoice) => {
+    console.log("Handling payment request in InvoiceTable:", invoice);
+    try {
+      await onRequestPayment(invoice);
+      message.success(`Payment request sent for invoice #${invoice.id}`);
+    } catch (error) {
+      console.error("Error in handleRequestPayment:", error);
+      message.error(`Failed to request payment for invoice #${invoice.id}`);
+    }
+  };
 
   return (
     <div className="bg-white rounded-lg p-6 w-full">

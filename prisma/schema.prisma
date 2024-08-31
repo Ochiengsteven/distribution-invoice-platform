@@ -68,7 +68,7 @@ model Distributor {
   products  Product[]
   orders    Order[]
   inventory Inventory[]
-  invoices  Invoice[] // Add this line
+  invoices  Invoice[]
 
   @@map("distributors")
 }
@@ -80,7 +80,7 @@ model Retailer {
   name      String
   orders    Order[]
   inventory Inventory[]
-  invoices  Invoice[] // Add this line
+  invoices  Invoice[]
 
   @@map("retailers")
 }
@@ -91,7 +91,7 @@ model Manufacturer {
   userId   String    @unique
   name     String
   products Product[]
-  invoices Invoice[] // Add this line
+  invoices Invoice[]
 
   @@map("manufacturers")
 }
@@ -218,6 +218,7 @@ enum ListingStatus {
 enum InvoiceStatus {
   PAID
   PENDING
+  PROCESSING
 }
 
 model Invoice {
@@ -230,7 +231,7 @@ model Invoice {
   createdAt           DateTime      @default(now())
   updatedAt           DateTime      @updatedAt
   expectedPaymentDate DateTime?
-  amount              Float // Add this line
+  amount              Float
   userId              String
   user                User          @relation(fields: [userId], references: [id])
   distributorId       String?
