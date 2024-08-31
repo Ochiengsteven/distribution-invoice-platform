@@ -25,6 +25,7 @@ import CustomDatePicker from "@/components/CustomDatePicker";
 import { useTimeGreeting } from "@/utils/useTimeGreeting";
 import InvoiceTable from "@/components/InvoiceTable";
 import { useCsv } from "@/utils/useCsv";
+import { requestPayment, checkPaymentStatus } from "@/lib/invoiceActions";
 
 const Dashboard = () => {
   const { user } = useSession();
@@ -49,6 +50,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     loadInvoices();
+    const interval = setInterval(checkPayments, 60000); // Check every minute
+    return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.id]);
 
@@ -133,6 +136,36 @@ const Dashboard = () => {
     visible: { opacity: 1 },
   };
 
+  const handleRequestPayment = async (invoice) => {
+    console.log("Handling payment request in Dashboard:", invoice);
+    try {
+      const result = await requestPayment(invoice);
+      if (result.success) {
+        message.success(result.message);
+        loadInvoices(); // Refresh the invoice list
+      } else {
+        message.error(`Payment request failed: ${result.error}`);
+        console.error("Payment request error details:", result.details);
+      }
+    } catch (error) {
+      console.error("Error in handleRequestPayment:", error);
+      message.error("An unexpected error occurred while requesting payment");
+    }
+  };
+
+  const checkPayments = async () => {
+    const pendingInvoices = invoices.filter(
+      (invoice) => invoice.status === "processing"
+    );
+    for (const invoice of pendingInvoices) {
+      const result = await checkPaymentStatus(invoice.id);
+      if (result.success && result.status === "paid") {
+        message.success(`Payment for invoice #${invoice.id} has been received`);
+      }
+    }
+    loadInvoices(); // Refresh the invoice list
+  };
+
   return (
     <motion.div
       className="w-full"
@@ -167,19 +200,19 @@ const Dashboard = () => {
         </div>
       </div>
       <motion.div
-        className="flex gap-2"
+        className="flex flex-col xl:flex-row gap-4"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
         <motion.div
-          className="mt-10 max-w-[600px]"
+          className="mt-10 w-full xl:max-w-[600px]"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <div className="flex items-center gap-8">
+          <div className="flex flex-wrap justify-between items-center gap-4">
             {dashboardItems.map((item, index) => (
               <div key={index} className="flex items-center gap-2">
                 <div className="p-4 rounded-full bg-white">
@@ -204,7 +237,7 @@ const Dashboard = () => {
           </div>
         </motion.div>
         <motion.div
-          className="w-[400px] mt-1"
+          className="w-full xl:w-[400px] mt-4 xl:mt-1"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -213,12 +246,12 @@ const Dashboard = () => {
           <div className="h-[300px]">
             <RevenueGraph />
           </div>
-          <div className="mt-1">
+          <div className="mt-4">
             <ActiveOrders />
           </div>
         </motion.div>
         <motion.div
-          className="flex-1 mt-1"
+          className="w-full xl:flex-1 mt-4 xl:mt-1"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -242,6 +275,7 @@ const Dashboard = () => {
             setIsModalVisible(true);
           }}
           onDelete={handleDeleteInvoice}
+          onRequestPayment={handleRequestPayment}
         />
       </motion.div>
       <InvoiceModal

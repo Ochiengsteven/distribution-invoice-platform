@@ -17,7 +17,7 @@
 
 ## Introduction
 
-Distribr is a modern alcohol distribution platform designed to streamline the process of managing inventory, orders, and deliveries for distributors, retailers, manufacturers, and delivery drivers in the alcohol industry. The application provides a comprehensive dashboard with features such as invoice management, real-time analytics, chat functionality, and a marketplace for peer-to-peer transactions.
+Distribr is a modern Warehouse distribution platform designed to streamline the process of managing inventory, orders, and deliveries for distributors, retailers, manufacturers, and delivery drivers in the alcohol industry. The application provides a comprehensive dashboard with features such as invoice management, real-time analytics, chat functionality, and a marketplace for peer-to-peer transactions.
 
 ### Key Features
 
