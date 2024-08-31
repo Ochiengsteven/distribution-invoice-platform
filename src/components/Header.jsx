@@ -9,7 +9,7 @@ export default function Header() {
           type="primary"
           href="/signup"
           size="large"
-          className="bg-indigo-950  rounded-full hover:bg-indigo-800"
+          className="bg-primary  rounded-full"
         >
           Sign Up
         </Button>
@@ -17,7 +17,7 @@ export default function Header() {
           type="primary"
           href="/login"
           size="large"
-          className="bg-indigo-950  rounded-full"
+          className="bg-primary  rounded-full"
         >
           Log in
         </Button>
