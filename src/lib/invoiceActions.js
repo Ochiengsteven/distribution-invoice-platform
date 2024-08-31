@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import axios from "axios";
 
 export async function createInvoice(data) {
   try {
@@ -143,3 +144,91 @@ export async function fetchInvoiceRevenue(timeFrame) {
     return { success: false, error: "Failed to fetch invoice revenue" };
   }
 }
+
+export const requestPayment = async (invoice) => {
+  console.log("requestPayment function called with invoice:", invoice);
+  try {
+    if (!invoice.phoneNumber) {
+      console.log("Phone number is missing");
+      return { success: false, error: "Phone number is required for payment" };
+    }
+
+    let formattedPhoneNumber = invoice.phoneNumber.replace(/\D/g, "");
+    if (!formattedPhoneNumber.startsWith("254")) {
+      formattedPhoneNumber = "254" + formattedPhoneNumber.slice(-9);
+    }
+    formattedPhoneNumber = "+" + formattedPhoneNumber;
+
+    const formattedAmount = parseFloat(invoice.amount).toFixed(2);
+
+    console.log("Sending payment request with:", {
+      phoneNumber: formattedPhoneNumber,
+      amount: formattedAmount,
+      invoiceId: invoice.id,
+    });
+
+    const response = await axios.post(
+      "https://api.mypayd.app/api/v2/payments",
+      {
+        username: "ochiengotieno",
+        network_code: "63902",
+        amount: formattedAmount,
+        phone_number: formattedPhoneNumber,
+        narration: `Payment for invoice #${invoice.id}`,
+        currency: "KES",
+        callback_url:
+          process.env.PAYD_CALLBACK_URL || "https://example.com/callback",
+      },
+      {
+        auth: {
+          username: "kbR5pSTsKLGzT1yrMuHU",
+          password: "ZE2E7pSfJl5DtbqsDx9zK23QYQlJTRYWgsQekINv",
+        },
+      }
+    );
+
+    console.log("API Response:", response.data);
+
+    if (response.data.status === "success") {
+      await updateInvoice(invoice.id, { status: "processing" });
+      return { success: true, message: "Payment request sent successfully" };
+    } else {
+      return {
+        success: false,
+        error: "Failed to send payment request",
+        details: response.data,
+      };
+    }
+  } catch (error) {
+    console.error(
+      "Error requesting payment:",
+      error.response ? error.response.data : error.message
+    );
+    return {
+      success: false,
+      error: "An error occurred while requesting payment",
+      details: error.response ? error.response.data : error.message,
+    };
+  }
+};
+
+export const checkPaymentStatus = async (invoiceId) => {
+  try {
+    // Here you would typically make an API call to check the payment status
+    // For this example, we'll simulate a successful payment
+    const paymentSuccessful = Math.random() > 0.5;
+
+    if (paymentSuccessful) {
+      await updateInvoice(invoiceId, { status: "paid" });
+      return { success: true, status: "paid" };
+    } else {
+      return { success: true, status: "pending" };
+    }
+  } catch (error) {
+    console.error("Error checking payment status:", error);
+    return {
+      success: false,
+      error: "An error occurred while checking payment status",
+    };
+  }
+};

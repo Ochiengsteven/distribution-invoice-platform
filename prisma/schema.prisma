@@ -218,6 +218,7 @@ enum ListingStatus {
 enum InvoiceStatus {
   PAID
   PENDING
+  PROCESSING
 }
 
 model Invoice {
